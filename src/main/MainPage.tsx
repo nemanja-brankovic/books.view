@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import MainTab from "./MainTab";
+import axios from "axios";
 
 function MainPage() {
+  useEffect(() => {
+    axios
+      .get("https://reactapp5server-dev.onrender.com/WeatherForecast")
+      .then((res) => {
+        console.log(res);
+      });
+  }, []);
+
   const itemsForBuy = [
     "Brzo pronadji knjigu koja ti je potrebna",
     "Brzo kontaktiraj prodavca",
