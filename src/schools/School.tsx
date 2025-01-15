@@ -1,11 +1,6 @@
 import { Link } from "react-router";
 import SchoolBadge from "./SchoolBadge";
 
-interface Props {
-  schoolType: "Srednja škola" | "Osnovna škola";
-  schoolName: string;
-}
-
 function School() {
   return (
     <Link to={"test"} className="p-4">
