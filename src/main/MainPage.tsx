@@ -1,0 +1,32 @@
+import MainTab from "./MainTab";
+
+function MainPage() {
+  const itemsForBuy = [
+    "Brzo pronadji knjigu koja ti je potrebna",
+    "Brzo kontaktiraj prodavca",
+    "Pronadji sve knjige za razred",
+  ];
+  const itemsForSell = [
+    "Prodaj sve knjige za razred zajedno",
+    "Brzo nadji kupca",
+    "Napravi oglas u 2 klika",
+  ];
+  return (
+    <div className="mt-12 grid gap-y-6 sm:grid-cols-2 sm:gap-x-6 md:gap-x-12 xl:gap-x-24">
+      <MainTab
+        heading="Kupi knjige"
+        link="/schools/buy"
+        items={itemsForBuy}
+        dark={false}
+      />
+      <MainTab
+        heading="Prodaj knjige"
+        link="/schools/sell"
+        items={itemsForSell}
+        dark={true}
+      />
+    </div>
+  );
+}
+
+export default MainPage;
