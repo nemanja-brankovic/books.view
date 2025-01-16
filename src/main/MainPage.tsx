@@ -22,7 +22,7 @@ function MainPage() {
     "Napravi oglas u 2 klika",
   ];
   return (
-    <div className="mt-12 grid gap-y-6 sm:grid-cols-2 sm:gap-x-6 md:gap-x-12 xl:gap-x-24">
+    <div className="mt-4 grid gap-y-6 sm:grid-cols-2 sm:gap-x-6 md:gap-x-12 xl:gap-x-24">
       <MainTab
         heading="Kupi knjige"
         link="/schools/buy"
