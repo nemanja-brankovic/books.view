@@ -3,11 +3,13 @@ import SchoolBadge from "./SchoolBadge";
 
 interface Props {
   schoolName: string;
+  id: string;
 }
 
-function School({ schoolName }: Props) {
+function School({ schoolName, id }: Props) {
+  const link = id + "/books";
   return (
-    <Link to={"test"} className="p-4">
+    <Link to={link} className="p-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-2xl overflow-hidden transform transition duration-50 hover:scale-105">
         <div className="relative">
           <img

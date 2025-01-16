@@ -1,9 +1,10 @@
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useParams } from "react-router";
 import NavigationLink from "./NavigationLink";
 
 function Navigation() {
+  const { type } = useParams();
   const location = useLocation();
-  const pages = ["school", "test"];
+  const pages = [type as string, "schools", "books"];
   return (
     <div className="bg-gray-900 rounded-lg p-4 pl-0 flex items-center flex-wrap">
       <ul className="flex items-center">

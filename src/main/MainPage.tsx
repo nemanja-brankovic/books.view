@@ -25,13 +25,13 @@ function MainPage() {
     <div className="mt-4 grid gap-y-6 sm:grid-cols-2 sm:gap-x-6 md:gap-x-12 xl:gap-x-24">
       <MainTab
         heading="Kupi knjige"
-        link="/schools/buy"
+        link="/buy/schools"
         items={itemsForBuy}
         dark={false}
       />
       <MainTab
         heading="Prodaj knjige"
-        link="/schools/sell"
+        link="/sell/schools"
         items={itemsForSell}
         dark={true}
       />
