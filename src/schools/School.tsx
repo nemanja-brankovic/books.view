@@ -1,7 +1,11 @@
 import { Link } from "react-router";
 import SchoolBadge from "./SchoolBadge";
 
-function School() {
+interface Props {
+  schoolName: string;
+}
+
+function School({ schoolName }: Props) {
   return (
     <Link to={"test"} className="p-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-2xl overflow-hidden transform transition duration-50 hover:scale-105">
@@ -15,7 +19,7 @@ function School() {
         </div>
         <div className="p-6">
           <h2 className="text-2xl font-bold mb-2 text-gray-800">
-            Tehnička škola Pirot
+            {schoolName}
           </h2>
           <div className="flex items-center mb-4">
             <svg
