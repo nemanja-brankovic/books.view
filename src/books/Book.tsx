@@ -11,7 +11,7 @@ interface Props {
 function Book({ id, title, author }: Props) {
   return (
     <Link to={id} className="p-4">
-      <div className="max-w-md w-64 bg-white rounded-xl shadow-2xl overflow-hidden transform transition duration-50 hover:scale-105">
+      <div className="max-w-md w-64 bg-white rounded-xl shadow-2xl overflow-hidden transform transition duration-150 hover:scale-105">
         <div className="relative">
           <img
             className="w-full h-64 object-cover"
