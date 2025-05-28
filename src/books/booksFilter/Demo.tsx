@@ -9,10 +9,6 @@ const Demo = () => {
   const [selectedNestedOption, setSelectedNestedOption] =
     useState<NestedOption | null>(null);
 
-  const handleSearch = (value: string) => {
-    console.log("Searching for:", value);
-  };
-
   const handleOptionSelect = (option: DropdownOption) => {
     console.log("Selected option:", option.label);
     setSelectedOption(option);
@@ -31,10 +27,8 @@ const Demo = () => {
   return (
     <>
       <BooksFilter
-        placeholder="Search products, categories, etc..."
         suggestions={sampleSuggestions}
         dropdownOptions={sampleDropdownOptions}
-        onSearch={handleSearch}
         onOptionSelect={handleOptionSelect}
         onNestedOptionSelect={handleNestedOptionSelect}
         defaultSelected={{
