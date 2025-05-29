@@ -6,7 +6,7 @@ function MainPage() {
   useEffect(() => {
     axios
       .get("https://reactapp5server-dev.onrender.com/WeatherForecast")
-      .then((res) => {
+      .then((res: any) => {
         console.log(res);
       });
   }, []);

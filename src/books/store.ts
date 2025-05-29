@@ -6,11 +6,22 @@ export interface BookModel {
     title: string;
     author: string;
     description?: string;
-    schoolMajors: School[];
+    schoolMajors: SchoolMajor[];
     year?: number;
 }
 
-export interface School {
+export type NestedOption = {
+    id: string;
+    label: string;
+};
+
+export type DropdownOption = {
+    id: string;
+    label: string;
+    nestedOptions?: NestedOption[];
+};
+
+export interface SchoolMajor {
     id: string;
     image?: string;
     name: string;
@@ -19,6 +30,11 @@ export interface School {
 
 interface BooksStore {
     allBooks: BookModel[];
+    schoolMajors: DropdownOption[];
+    selectedSchool?: DropdownOption;
+    selectedGrade?: NestedOption | null;
+    selectSchoolMajor: (schoolMajor: DropdownOption) => void;
+    selectGrade: (grade: NestedOption | null) => void;
     addBook: (feature: BookModel) => void;
     searchBook: (query: string, schoolMajors?: string, year?: string) => void;
     removeBook: (feature: BookModel) => void;
@@ -26,6 +42,13 @@ interface BooksStore {
 
 const useBooksStore = create<BooksStore>(set => ({
     allBooks: getBooks(),
+    schoolMajors: getSchools(),
+    selectSchoolMajor: (schoolMajor: DropdownOption) => set(() => ({
+        selectedSchool: schoolMajor
+    })),
+    selectGrade: (grade: NestedOption | null) => set(() => ({
+        selectedGrade: grade
+    })),
     addBook: (book: BookModel) => {
         set(state => {
             const updatedFeatures = [...state.allBooks];
@@ -34,7 +57,7 @@ const useBooksStore = create<BooksStore>(set => ({
             return { allBooks: updatedFeatures };
         });
     },
-    searchBook: (query: string, schoolMajor?: string, year?: string) => set(state => ({
+    searchBook: (query: string, schoolMajor?: string, year?: string) => set(() => ({
         allBooks: filterBooks(getBooks(), query, schoolMajor, year)
     })),
     removeBook: (book: BookModel) => set(state => ({ allBooks: state.allBooks.filter(c => c.id !== book.id) }))
@@ -52,9 +75,9 @@ function filterBooks(books: BookModel[], query: string, school?: string, year?: 
     });
 }
 
-function getRandomSchools(): School[] {
+function getRandomSchools(): SchoolMajor[] {
     const totalSchools = Math.floor(Math.random() * 3) + 1; // 1 to 3 schools per book
-    const schools: School[] = [];
+    const schools: SchoolMajor[] = [];
 
     for (let i = 0; i < totalSchools; i++) {
         const schoolId = Math.floor(Math.random() * 10) + 1; // 1 to 10
@@ -339,5 +362,60 @@ function getBooks(): BookModel[] {
             schoolMajors: getRandomSchools(),
             year: Math.floor(Math.random() * 4) + 1
         }
+    ];
+}
+
+function getSchools(): DropdownOption[] {
+    return [
+        {
+            id: "1",
+            label: "Elektrotehničar informacionih tehnologija",
+            nestedOptions: [
+                { id: "1-1", label: "I razred" },
+                { id: "1-2", label: "II razred" },
+                { id: "1-3", label: "III razred" },
+                { id: "1-4", label: "IV razred" },
+            ],
+        },
+        {
+            id: "2",
+            label: "Tehničar mehatronike",
+            nestedOptions: [
+                { id: "2-1", label: "I razred" },
+                { id: "2-2", label: "II razred" },
+                { id: "2-3", label: "III razred" },
+                { id: "2-4", label: "IV razred" },
+            ],
+        },
+        {
+            id: "3",
+            label: "Elektrotehničar za elektroniku na vozilima",
+            nestedOptions: [
+                { id: "3-1", label: "I razred" },
+                { id: "3-2", label: "II razred" },
+                { id: "3-3", label: "III razred" },
+                { id: "3-4", label: "IV razred" },
+            ],
+        },
+        {
+            id: "4",
+            label: "Tehničar za kompjutersko upravljanje CNC mašina",
+            nestedOptions: [
+                { id: "4-1", label: "I razred" },
+                { id: "4-2", label: "II razred" },
+                { id: "4-3", label: "III razred" },
+                { id: "4-4", label: "IV razred" },
+            ],
+        },
+        {
+            id: "5",
+            label: "Tehničar drumskog saobraćaja",
+            nestedOptions: [
+                { id: "5-1", label: "I razred" },
+                { id: "5-2", label: "II razred" },
+                { id: "5-3", label: "III razred" },
+                { id: "5-4", label: "IV razred" },
+            ],
+        },
     ];
 }

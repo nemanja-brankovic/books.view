@@ -1,57 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, ChevronDown, X } from "lucide-react";
 import Dropdown from "./Dropdown";
-import useBooksStore from "../store";
+import useBooksStore, { DropdownOption, NestedOption } from "../store";
 
-export type NestedOption = {
-  id: string;
-  label: string;
-};
-
-export type DropdownOption = {
-  id: string;
-  label: string;
-  nestedOptions?: NestedOption[];
-};
-
-type Props = {
-  suggestions?: string[];
-  dropdownOptions?: DropdownOption[];
-  defaultSelected: {
-    option: DropdownOption | null;
-    nestedOption: NestedOption | null;
-  };
-};
-
-export default function BooksFilter({
-  suggestions = [],
-  dropdownOptions = [],
-  defaultSelected = { option: null, nestedOption: null },
-}: Props) {
+export default function BooksFilter() {
   const searchBook = useBooksStore((state) => state.searchBook);
+  const selectSchoolMajor = useBooksStore((state) => state.selectSchoolMajor);
+  const selectGrade = useBooksStore((state) => state.selectGrade);
+  const schoolMajors = useBooksStore((state) => state.schoolMajors);
+  const selectedSchoolMajor = useBooksStore((state) => state.selectedSchool);
+  const selectedGrade = useBooksStore((state) => state.selectedGrade);
+  const books = useBooksStore((state) => state.allBooks);
   const [inputValue, setInputValue] = useState("");
-  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [expandedOptionId, setExpandedOptionId] = useState<string | null>(null);
-  const [selectedSchoolMajor, setSelectedOption] =
-    useState<DropdownOption | null>(defaultSelected.option || null);
-  const [selectedGrade, setSelectedNestedOption] =
-    useState<NestedOption | null>(defaultSelected.nestedOption || null);
   const searchRef = useRef<HTMLDivElement>(null);
-
-  // Filter suggestions based on input
-  useEffect(() => {
-    if (inputValue.trim() === "") {
-      setFilteredSuggestions([]);
-      return;
-    }
-
-    const filtered = suggestions.filter((suggestion) =>
-      suggestion.toLowerCase().includes(inputValue.toLowerCase())
-    );
-    setFilteredSuggestions(filtered);
-  }, [inputValue, suggestions]);
 
   // Handle click outside to close dropdowns
   useEffect(() => {
@@ -90,23 +54,23 @@ export default function BooksFilter({
     setShowSuggestions(false);
   };
 
-  const handleOptionClick = (option: DropdownOption) => {
-    if (option.nestedOptions && option.nestedOptions.length > 0) {
+  const handleOptionClick = (schoolMajor: DropdownOption) => {
+    if (schoolMajor.nestedOptions && schoolMajor.nestedOptions.length > 0) {
       // If option is already selected, clicking again will toggle expand/collapse
-      if (selectedSchoolMajor && selectedSchoolMajor.id === option.id) {
-        setExpandedOptionId(expandedOptionId === option.id ? null : option.id);
+      if (selectedSchoolMajor && selectedSchoolMajor.id === schoolMajor.id) {
+        setExpandedOptionId(expandedOptionId === schoolMajor.id ? null : schoolMajor.id);
       } else {
         // Select the option and expand its nested options
-        setSelectedOption(option);
-        setSelectedNestedOption(null);
-        searchBook(inputValue, option.label, selectedGrade?.label);
-        setExpandedOptionId(option.id);
+        selectSchoolMajor(schoolMajor);
+        selectGrade(null);
+        searchBook(inputValue, schoolMajor.label, selectedGrade?.label);
+        setExpandedOptionId(schoolMajor.id);
       }
     } else {
       // For options without nested options, select and close dropdown
-      setSelectedOption(option);
-      setSelectedNestedOption(null);
-      searchBook(inputValue, option.label, selectedGrade?.label);
+      selectSchoolMajor(schoolMajor);
+      selectGrade(null);
+      searchBook(inputValue, schoolMajor.label, selectedGrade?.label);
       setShowDropdown(false);
     }
   };
@@ -115,8 +79,8 @@ export default function BooksFilter({
     parentOption: DropdownOption,
     nestedOption: NestedOption
   ) => {
-    setSelectedOption(parentOption);
-    setSelectedNestedOption(nestedOption);
+    selectSchoolMajor(parentOption);
+    selectGrade(nestedOption);
     searchBook(inputValue, parentOption.label, nestedOption?.label);
     setShowDropdown(false);
     setExpandedOptionId(null);
@@ -156,7 +120,7 @@ export default function BooksFilter({
           </div>
 
           {/* Dropdown toggle (only if options exist) */}
-          {dropdownOptions.length > 0 && (
+          {schoolMajors.length > 0 && (
             <button
               onClick={handleDropdownClick}
               className="flex items-center px-3 py-2 bg-gray-50 text-gray-700 border-l border-gray-300 hover:bg-gray-100"
@@ -177,16 +141,16 @@ export default function BooksFilter({
           )}
         </div>
         {/* Autocomplete suggestions */}
-        {showSuggestions && filteredSuggestions.length > 0 && (
+        {showSuggestions && books.length > 0 && (
           <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
             <ul className="py-1">
-              {filteredSuggestions.map((suggestion, index) => (
+              {books.map((book, index) => (
                 <li
                   key={index}
-                  onClick={() => handleSuggestionClick(suggestion)}
+                  onClick={() => handleSuggestionClick(book.title)}
                   className="px-4 py-2 hover:bg-blue-50 cursor-pointer text-gray-700"
                 >
-                  {suggestion}
+                  {book.title}
                 </li>
               ))}
             </ul>
@@ -194,9 +158,9 @@ export default function BooksFilter({
         )}
 
         {/* Dropdown menu */}
-        {showDropdown && dropdownOptions.length > 0 && (
+        {showDropdown && schoolMajors.length > 0 && (
           <Dropdown
-            dropdownOptions={dropdownOptions}
+            dropdownOptions={schoolMajors}
             expandedOptionId={expandedOptionId}
             handleNestedOptionClick={handleNestedOptionClick}
             handleOptionClick={handleOptionClick}

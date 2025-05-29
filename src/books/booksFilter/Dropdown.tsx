@@ -1,5 +1,5 @@
 import { ChevronDown } from "lucide-react";
-import { DropdownOption } from "./BooksFilter";
+import { DropdownOption } from "../store";
 
 interface Props {
   dropdownOptions: DropdownOption[];
@@ -8,8 +8,8 @@ interface Props {
     option: DropdownOption,
     nestedOption: DropdownOption
   ) => void;
-  selectedOption: DropdownOption | null;
-  selectedNestedOption: DropdownOption | null;
+  selectedOption: DropdownOption | null | undefined;
+  selectedNestedOption: DropdownOption | null | undefined;
   expandedOptionId: string | null;
 }
 
@@ -75,13 +75,6 @@ function Dropdown({
       </ul>
     </div>
   );
-}
-
-function SmallerName(text: string | undefined): string {
-  if (text) {
-    return text.substring(0, 15) + "... ";
-  }
-  return "";
 }
 
 export default Dropdown;
