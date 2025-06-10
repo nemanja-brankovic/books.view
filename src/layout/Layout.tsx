@@ -4,10 +4,10 @@ import styles from "./layout.module.css";
 
 function Layout() {
   return (
-    <section className="pb-12 pt-4 bg-gray-900 text-gray-100 overflow-hidden">
+    <section className="min-h-screen w-full pb-12 pt-4 bg-gray-900 text-gray-100 overflow-hidden">
       <div className={styles.stars}></div>
       <div className={styles.starsBig}></div>
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto px-4">
         <h2 className="font-bold text-4xl sm:text-5xl md:text-7xl xl:text-9xl">
           Polovne
           <span className="text-teal-400"> knjige</span>
